@@ -86,14 +86,18 @@ public class UniversityGPACalculatorOOP {
         System.out.println("\nStudent Name: " + student.getName());
         System.out.println("Index Number: " + student.getIndexNumber());
 
-        int selectedYear = selectYear(scanner);
-        int selectedSemester = selectSemester(scanner);
+        for (int i = 0; i < academicYears.length; i++) {
+            System.out.println("\nAcademic Year " + (i + 1) + ":");
 
-        AcademicYear academicYear = academicYears[selectedYear - 1];
-        Semester semester = academicYear.getSemesters()[selectedSemester - 1];
+            AcademicYear academicYear = academicYears[i];
 
-        double semesterGPA = calculateSemesterGPA(scanner, semester);
-        System.out.println("\nSemester GPA: " + semesterGPA);
+            for (int j = 0; j < academicYear.getSemesters().length; j++) {
+                System.out.println("\nSemester " + (j + 1) + ":");
+                Semester semester = academicYear.getSemesters()[j];
+                double semesterGPA = calculateSemesterGPA(semester);
+                System.out.println("Semester GPA: " + semesterGPA);
+            }
+        }
 
         System.out.println("\nFinal GPA: " + finalGPA);
 
@@ -133,7 +137,7 @@ public class UniversityGPACalculatorOOP {
         return academicYears;
     }
 
-    private static double calculateSemesterGPA(Scanner scanner, Semester semester) {
+    private static double calculateSemesterGPA(Semester semester) {
         double totalCredits = 0;
         double totalGradePoints = 0;
 
@@ -142,10 +146,8 @@ public class UniversityGPACalculatorOOP {
             int credit = subjectCode % 10; // Extract last digit for credit
             totalCredits += credit;
 
-            System.out.print("Enter the grade for " + subject.getSubjectName() + " (A, A-, B+, B, B-, C+, C, C-, D+, D, D-, F): ");
-            char grade = scanner.next().toUpperCase().charAt(0);
-
-            double gradePoints = getGradePoints(grade);
+            // For simplicity, assuming grade as 'A' for all subjects
+            double gradePoints = getGradePoints('A');
             totalGradePoints += gradePoints * credit;
         }
 
@@ -178,33 +180,9 @@ public class UniversityGPACalculatorOOP {
         switch (grade) {
             case 'A':
                 return 4.0;
-            case 'B':
-                return 3.0;
-            case 'C':
-                return 2.0;
             // Add more cases for other grades as needed
             default:
                 return 0.0;
         }
-    }
-
-    private static int selectYear(Scanner scanner) {
-        System.out.print("Enter the academic year (1-4): ");
-        int selectedYear = scanner.nextInt();
-        if (selectedYear < 1 || selectedYear > 4) {
-            System.out.println("Invalid input. Please enter a number between 1 and 4.");
-            return selectYear(scanner);
-        }
-        return selectedYear;
-    }
-
-    private static int selectSemester(Scanner scanner) {
-        System.out.print("Enter the semester (1-2): ");
-        int selectedSemester = scanner.nextInt();
-        if (selectedSemester < 1 || selectedSemester > 2) {
-            System.out.println("Invalid input. Please enter either 1 or 2.");
-            return selectSemester(scanner);
-        }
-        return selectedSemester;
     }
 }
